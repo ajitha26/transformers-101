@@ -104,3 +104,34 @@ GloVe (Global Vectors for Word Representation) creates embeddings by factorizing
 Word2Vec and GloVe produce static embeddings where each word has a fixed vector. Transformer embeddings are contextual, meaning the same word can have different vectors depending on its sentence context.
 
 ---
+Handling Abrupt Cutoffs in Generated Text
+1. Increase max_new_tokens or max_length:
+Set a higher limit on the number of tokens the model can generate to avoid premature stopping.
+
+2. Use stop_sequences or eos_token_id:
+Define explicit stopping criteria so the model knows when to end output cleanly instead of cutting off mid-sentence.
+
+3. Control generation parameters:
+
+Use do_sample=True with temperature to encourage more natural and varied completions.
+
+Use beam search (num_beams > 1) for more coherent and complete outputs.
+
+4. Prompt engineering:
+
+Add clear instructions or examples that specify desired output length and completeness.
+
+Include phrases like “Explain fully,” or “Complete the explanation without stopping abruptly.”
+
+5. Post-processing:
+
+Detect incomplete sentences (e.g., missing punctuation) in the output and prompt the model to continue from there.
+
+Concatenate multiple generation calls, feeding the last few tokens back as context.
+
+6. Model choice:
+
+Use models known for stable and longer generation capability.
+
+Fine-tune models with data encouraging full-sentence completion.
+
