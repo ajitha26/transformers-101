@@ -1,6 +1,6 @@
 ---
 
-# Understanding Language Models: Key Concepts for AI Engineers
+# Understanding Language Models: Key Concepts
 
 ---
 
