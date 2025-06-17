@@ -47,7 +47,7 @@ Transformers don’t inherently know token order. Positional embeddings add sequ
 **Q: What types of positional embeddings exist?**
 
 * **Absolute positional embeddings:** Assign fixed position vectors to each token position.
-* **Relative positional embeddings:** Encode token positions relative to each other, allowing better generalization to longer sequences.
+* **Relative positional embeddings:** Encode token positions relative to each other, allowing better generalization to longer sequences.(relative distance between tokens better at capturing relationships)
 
 **Q: How are positional embeddings combined with token embeddings?**
 They are usually added together element-wise before being passed into the transformer layers.
@@ -57,7 +57,27 @@ They are usually added together element-wise before being passed into the transf
 ## 4. End-to-End Flow (Text → Tokens → Embeddings → Model → Output)
 
 **Q: What is the typical data flow in an LLM during inference?**
-Text input → tokenized into IDs → mapped to embeddings → passed through transformer layers → model outputs logits → logits converted to token probabilities → tokens sampled/generated → decoded back to text.
+Text input → tokenized into IDs → mapped to embeddings → passed through transformer layers → model outputs logits → logits converted to token probabilities(using softmax) → tokens sampled/generated → decoded back to text.
+TOKENS SAMPLED/GENERATED:
+Sampling or selection happens here:
+Greedy decoding: Pick the token with the highest probability.
+
+Top-k sampling: Pick from the top k tokens.
+
+Top-p (nucleus) sampling: Pick from the smallest set of tokens whose cumulative probability ≥ p (e.g. 0.9).
+
+Temperature: Adjusts randomness (higher = more random).
+
+| Stage                     | What Happens                                   |
+| ------------------------- | ---------------------------------------------- |
+| **1. Tokenization**       | Text → Token IDs                               |
+| **2. Embedding**          | Token IDs → Vectors                            |
+| **3. Transformer Layers** | Contextual processing of token vectors         |
+| **4. Logits**             | Predict scores for each token at each position |
+| **5. Softmax**            | Convert logits → probabilities                 |
+| **6. Sampling**           | Choose next token                              |
+| **7. Decoding**           | Generated tokens → Human-readable text         |
+
 
 **Q: What are `input_ids` and `attention_mask`?**
 
@@ -133,5 +153,5 @@ Concatenate multiple generation calls, feeding the last few tokens back as conte
 
 Use models known for stable and longer generation capability.
 
-Fine-tune models with data encouraging full-sentence completion.
+Fine-tune models with data encouraging full-sentence completion.(DONT DO THIS)
 
